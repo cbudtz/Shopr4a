@@ -35,4 +35,18 @@ public interface IMainViewModel extends IShopListListener, ISuperMarketListener,
     void deleteCategory(int catId);
 
     void setActiveShopListName(String listName);
+
+    String getActiveShopListName();
+
+    void shareShopListWithUserID(String email, String activeShopListID);
+
+    void addCategory(String catName);
+
+    void deleteActiveList();
+
+    void addItemToActiveList(String category, ListItem listItem);
+
+    void addItemToActiveListNoCategory(ListItem newItem);
+
+    String getActiveShopListID();
 }

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -71,11 +72,12 @@ public class BuyListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_buy_list, container, false);
-        ((TextView)v.findViewById(R.id.listNameBuy)).setText(FireBaseController.getI().getActiveShopListName());
+        ((TextView)v.findViewById(R.id.listNameBuy)).setText(mainViewModel.getActiveShopListName());
+        mainViewModel.addTitleTextView(((TextView) v.findViewById(R.id.listNameBuy)));
 
         ListView listView = (ListView) v.findViewById(R.id.buyfragmentlistview);
 
-        ShopListBuyViewAdapter adaptor = new ShopListBuyViewAdapter(getActivity(), android.R.layout.simple_list_item_1, mainViewModel.getShopListViewContents());
+        ShopListBuyViewAdapter adaptor = new ShopListBuyViewAdapter(getActivity(), android.R.layout.simple_list_item_1, mainViewModel);
         listView.setAdapter(adaptor);
         mainViewModel.setShoplistAdaptor(adaptor);
         // Inflate the layout for this fragment

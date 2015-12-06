@@ -72,6 +72,41 @@ public class MainViewModel implements IMainViewModel {
         FireBaseController.getI().setActiveShopListName(listName);
     }
 
+    @Override
+    public String getActiveShopListName() {
+        return FireBaseController.getI().getActiveShopListName();
+    }
+
+    @Override
+    public void shareShopListWithUserID(String email, String activeShopListID) {
+        FireBaseController.getI().shareShopListWithUserID(email, activeShopListID);
+    }
+
+    @Override
+    public void addCategory(String catName) {
+        FireBaseController.getI().addCategory(catName);
+    }
+
+    @Override
+    public void deleteActiveList() {
+        FireBaseController.getI().deleteActiveList();
+    }
+
+    @Override
+    public void addItemToActiveList(String category, ListItem listItem) {
+        FireBaseController.getI().addItemToActiveList(category, new ListItem(listItem.getAmount(), listItem.getUnit(), listItem.getName()));
+    }
+
+    @Override
+    public void addItemToActiveListNoCategory(ListItem newItem) {
+        FireBaseController.getI().addItemToActiveListNoCategory(newItem);
+    }
+
+    @Override
+    public String getActiveShopListID() {
+        return FireBaseController.getI().getActiveShopListID();
+    }
+
 
     //Adaptors to be notified on dataChange
     private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
