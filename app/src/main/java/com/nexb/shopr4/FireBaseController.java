@@ -78,7 +78,7 @@ public class FireBaseController {
         FireBaseController.activity = mainActivity;
         FireBaseController.url = Firebaseurl;
     }
-
+    //Singleton getter
     public static synchronized FireBaseController getI() {
         if (activity == null || url == null) {
             System.out.println("Must provide url and activity first!!");
@@ -91,7 +91,7 @@ public class FireBaseController {
         return instance;
 
     }
-
+    // Constructor
     private FireBaseController(MainActivity mainActivity, String url) {
         activity = mainActivity;
         FireBaseController.url = url;
@@ -247,12 +247,11 @@ public class FireBaseController {
 
     public void deleteActiveList(){
         String deleteID = user.getActiveList();
-        for (String listId : user.getOwnLists()) {
-            if (listId.equals(deleteID)) {
-                user.getOwnLists().remove(listId);
-                user.setActiveList(user.getOwnLists().get(0));
-                if (user.getActiveList() == null) {
-                    createNewShopList();
+        for (int i=0;i<user.getOwnLists().size();i++) {
+            if (user.getOwnLists().get(i).equals(activeShopList.getId())) {
+                user.getOwnLists().remove(i);
+                user.getOwnListNames().remove(i);
+                if (user.getOwnLists().size()>0) {
                     user.setActiveList(user.getOwnLists().get(0));
                 }
                 firebaseUserRef.setValue(user);
@@ -369,7 +368,6 @@ public class FireBaseController {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User foreignUser = dataSnapshot.getValue(User.class);
-                System.out.println(foreignUser.getForeignLists().size());
                 if (foreignUser== null) {
                     foreignUser = new User();
                 }
@@ -381,14 +379,15 @@ public class FireBaseController {
                 System.out.println(foreignUser.getForeignLists().size());
                 System.out.println("FireBaseController Added list to foreignUser");
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
             }
         });
-
-
+    }
+    @Deprecated //Future implementation of location manager
+    public void setLocation(double lat, double lon){
+        firebaseUserRef.child("location").child("lat").setValue(lat);
+        firebaseUserRef.child("location").child("lon").setValue(lon);
     }
 
     public void setShoplistAdaptor(ArrayAdapter<ShopListViewContent> shoplistAdaptor) {
@@ -474,10 +473,8 @@ public class FireBaseController {
             NavigationView navDrawer = activity.getNavigationView();
             activity.userMail = user.getUserID(); //Tell Main activity the users name and email
             activity.userName = user.getUserName();
-            if (activity.findViewById(R.id.userMail)!=null) ((TextView)activity.findViewById(R.id.userMail)).setText(user.getUserID().replace(":","."));
+            if (activity.findViewById(R.id.userMail)!=null) ((TextView)activity.findViewById(R.id.userMail)).setText(user.getUserID().replace(":", "."));
             if (activity.findViewById(R.id.userName)!=null) ((TextView)activity.findViewById(R.id.userName)).setText(user.getUserName());
-            navDrawer.getMenu().removeGroup(1);
-            navDrawer.getMenu().removeGroup(2);
 
             int i = 0;
 //            for (String s : user.getOwnListNames()) {
@@ -532,8 +529,6 @@ public class FireBaseController {
                 dictionaryAdapter.addAll(getDictionaryStrings());
                 dictionaryAdapter.notifyDataSetChanged();
             }
-
-            if (standardized) firebaseUserRef.setValue(user);
         }
 
         @Override

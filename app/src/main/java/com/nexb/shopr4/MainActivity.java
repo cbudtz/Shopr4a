@@ -24,6 +24,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nexb.shopr4.Interfaces.IDataBaseController;
+import com.nexb.shopr4.Interfaces.IMainViewModel;
 import com.nexb.shopr4.dataModel.DictionaryItem;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.fragments.BuyListFragment;
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         EditListFragment.OnFragmentInteractionListener, BuyListFragment.OnFragmentInteractionListener, ShareListFragment.OnFragmentInteractionListener{
     public static final boolean DEBUG = true;
+//    private LocationManager locationManager;
+
     public enum fragmentState {EDIT,BUY,SHARE};
     private fragmentState fragmentType;
     private EditListFragment editFragment;
@@ -97,8 +101,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.inflateHeaderView(R.layout.list_nav_header_view);
 
 
-
-        IDataBaseController firebaseHandler = new FirebaseHandler(this, getString(R.string.fireBaseUrl));
+        //setup callback handler and ViewModel
+        IDataBaseController firebaseHandler = new FirebaseCallBackHandler(this, getString(R.string.fireBaseUrl));
         mainViewModel = new MainViewModel(this, firebaseHandler);
         firebaseHandler.addActiveShopListListener(mainViewModel);
         firebaseHandler.addActiveSuperMarketListener(mainViewModel);
@@ -117,6 +121,9 @@ public class MainActivity extends AppCompatActivity
         //Show editlistfragment
         fragmentManager.beginTransaction().replace(R.id.mainContainer, editFragment).commit();
         fragmentType = fragmentState.EDIT;
+
+        //Future use
+//        locationManager = new LocationManager(this);
     }
 
     private void setUpActionBox() {

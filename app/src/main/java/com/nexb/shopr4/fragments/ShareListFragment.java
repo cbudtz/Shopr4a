@@ -13,8 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nexb.shopr4.FireBaseController;
-import com.nexb.shopr4.IMainViewModel;
-import com.nexb.shopr4.MainViewModel;
+import com.nexb.shopr4.Interfaces.IMainViewModel;
 import com.nexb.shopr4.R;
 
 /**
